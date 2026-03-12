@@ -97,7 +97,7 @@ function detectProjectName(root: string, explicit?: string): string {
 program
   .name('guardlink')
   .description('GuardLink — Security annotations for code. Threat modeling that lives in your codebase.')
-  .version('1.1.0')
+  .version('1.4.1')
   .addHelpText('before', gradient(['#00ff41', '#00d4ff'])(ASCII_LOGO));
 
 // ─── init ────────────────────────────────────────────────────────────
@@ -1407,29 +1407,29 @@ program
       console.log(D('  Annotations live in source code comments. GuardLink parses'));
       console.log(D('  them to build a live threat model from your codebase.'));
       console.log('');
-      console.log(D('  Syntax:  @verb  subject  [preposition  object]  [: description]'));
+      console.log(D('  Syntax:  @verb  subject  [preposition  object]  [-- "description"]'));
       console.log('');
 
       // ── DEFINITIONS ──
       console.log(H('  ── Definitions ─────────────────────────────────────────────'));
       console.log('');
 
-      console.log(`  ${V('@asset')}  ${K('<path>')}  ${D('[: description]')}`);
+      console.log(`  ${V('@asset')}  ${K('<path>')}  ${D('[-- "description"]')}`);
       console.log(D('    Declare a named asset (component, service, data store).'));
       console.log(D('    Path uses dot notation for hierarchy.'));
-      console.log(EX('    // @asset  api.auth.token_store  : Stores JWT refresh tokens'));
+      console.log(EX('    // @asset  api.auth.token_store  -- "Stores JWT refresh tokens"'));
       console.log(EX('    // @asset  db.users'));
       console.log('');
 
-      console.log(`  ${V('@threat')}  ${K('<name>')}  ${D('[severity: critical|high|medium|low]  [: description]')}`);
-      console.log(D('    Declare a named threat. Severity aliases: P0=critical P1=high P2=medium P3=low.'));
-      console.log(EX('    // @threat  SQL Injection  severity:high  : Unsanitized input reaches DB'));
-      console.log(EX('    // @threat  Token Theft  severity:P0'));
+      console.log(`  ${V('@threat')}  ${K('<name>')}  ${D('(#id)')}  ${D('[critical|high|medium|low]')}  ${D('[ext-refs]')}  ${D('[-- "description"]')}`);
+      console.log(D('    Declare a named threat. Severity in brackets: [P0]=[critical] [P1]=[high] [P2]=[medium] [P3]=[low].'));
+      console.log(EX('    // @threat  SQL Injection  (#sql-inj)  [high]  cwe:CWE-89  -- "Unsanitized input reaches DB"'));
+      console.log(EX('    // @threat  Token Theft  [P0]'));
       console.log('');
 
-      console.log(`  ${V('@control')}  ${K('<name>')}  ${D('[: description]')}`);
+      console.log(`  ${V('@control')}  ${K('<name>')}  ${D('(#id)')}  ${D('[-- "description"]')}`);
       console.log(D('    Declare a security control (mitigation mechanism).'));
-      console.log(EX('    // @control  Input Validation  : Sanitize all user-supplied strings'));
+      console.log(EX('    // @control  Input Validation  (#input-val)  -- "Sanitize all user-supplied strings"'));
       console.log(EX('    // @control  Rate Limiting'));
       console.log('');
 
@@ -1437,103 +1437,122 @@ program
       console.log(H('  ── Relationships ───────────────────────────────────────────'));
       console.log('');
 
-      console.log(`  ${V('@exposes')}  ${K('<asset>')}  ${D('to')}  ${K('<threat>')}  ${D('[severity: ...]  [: description]')}`);
+      console.log(`  ${V('@exposes')}  ${K('<asset>')}  ${D('to')}  ${K('<threat>')}  ${D('[severity]')}  ${D('[ext-refs]')}  ${D('[-- "description"]')}`);
       console.log(D('    Mark an asset as exposed to a threat at this code location.'));
       console.log(D('    This is the primary annotation — every exposure creates a finding.'));
-      console.log(EX('    // @exposes  api.auth  to  SQL Injection  severity:high'));
-      console.log(EX('    // @exposes  db.users  to  Token Theft  severity:critical  : No token rotation'));
+      console.log(EX('    // @exposes  api.auth  to  SQL Injection  [high]  cwe:CWE-89'));
+      console.log(EX('    // @exposes  db.users  to  Token Theft  [critical]  -- "No token rotation"'));
       console.log('');
 
-      console.log(`  ${V('@mitigates')}  ${K('<asset>')}  ${D('against')}  ${K('<threat>')}  ${D('[with')}  ${K('<control>')}${D(']  [: description]')}`);
+      console.log(`  ${V('@mitigates')}  ${K('<asset>')}  ${D('against')}  ${K('<threat>')}  ${D('[using')}  ${K('<control>')}${D(']')}  ${D('[-- "description"]')}`);
       console.log(D('    Mark that a control mitigates a threat on an asset.'));
       console.log(D('    Closes the exposure — removes it from open findings.'));
-      console.log(EX('    // @mitigates  api.auth  against  SQL Injection  with  Input Validation'));
-      console.log(EX('    // @mitigates  db.users  against  Token Theft  : Rotation implemented in v2'));
+      console.log(D('    "using" is the primary keyword; "with" also accepted.'));
+      console.log(EX('    // @mitigates  api.auth  against  SQL Injection  using  Input Validation'));
+      console.log(EX('    // @mitigates  db.users  against  Token Theft  -- "Rotation implemented in v2"'));
       console.log('');
 
-      console.log(`  ${V('@accepts')}  ${K('<threat>')}  ${D('on')}  ${K('<asset>')}  ${D('[: reason]')}`);
+      console.log(`  ${V('@accepts')}  ${K('<threat>')}  ${D('on')}  ${K('<asset>')}  ${D('[-- "reason"]')}`);
       console.log(D('    Explicitly accept a risk. Removes it from open findings.'));
       console.log(D('    Use when the risk is known and intentionally not mitigated.'));
-      console.log(EX('    // @accepts  Timing Attack  on  api.auth  : Acceptable for current threat model'));
+      console.log(EX('    // @accepts  Timing Attack  on  api.auth  -- "Acceptable for current threat model"'));
       console.log('');
 
-      console.log(`  ${V('@transfers')}  ${K('<threat>')}  ${D('from')}  ${K('<source>')}  ${D('to')}  ${K('<target>')}  ${D('[: description]')}`);
+      console.log(`  ${V('@transfers')}  ${K('<threat>')}  ${D('from')}  ${K('<source>')}  ${D('to')}  ${K('<target>')}  ${D('[-- "description"]')}`);
       console.log(D('    Transfer responsibility for a threat to another asset/team.'));
-      console.log(EX('    // @transfers  DDoS  from  api.gateway  to  cdn.cloudflare  : Handled by CDN layer'));
+      console.log(EX('    // @transfers  DDoS  from  api.gateway  to  cdn.cloudflare  -- "Handled by CDN layer"'));
       console.log('');
 
       // ── DATA FLOWS ──
       console.log(H('  ── Data Flows & Boundaries ─────────────────────────────────'));
       console.log('');
 
-      console.log(`  ${V('@flows')}  ${K('<source>')}  ${D('to')}  ${K('<target>')}  ${D('[via')}  ${K('<mechanism>')}${D(']  [: description]')}`);
+      console.log(`  ${V('@flows')}  ${K('<source>')}  ${D('->')}  ${K('<target>')}  ${D('[via')}  ${K('<mechanism>')}${D(']')}  ${D('[-- "description"]')}`);
       console.log(D('    Document data movement between components.'));
       console.log(D('    Appears in the Data Flow Diagram.'));
-      console.log(EX('    // @flows  api.auth  to  db.users  via  TLS 1.3'));
-      console.log(EX('    // @flows  mobile.app  to  api.gateway  via  HTTPS  : User credentials'));
+      console.log(EX('    // @flows  api.auth  ->  db.users  via  TLS 1.3'));
+      console.log(EX('    // @flows  mobile.app  ->  api.gateway  via  HTTPS  -- "User credentials"'));
       console.log('');
 
-      console.log(`  ${V('@boundary')}  ${K('<asset_a>')}  ${D('and')}  ${K('<asset_b>')}  ${D('[: description]')}`);
+      console.log(`  ${V('@boundary')}  ${K('<asset_a>')}  ${D('and')}  ${K('<asset_b>')}  ${D('(#id)')}  ${D('[-- "description"]')}`);
       console.log(D('    Declare a trust boundary between two assets.'));
       console.log(D('    Groups assets in the Data Flow Diagram.'));
-      console.log(EX('    // @boundary  internet  and  api.gateway  : Public-facing edge'));
-      console.log(EX('    // @boundary  api.gateway  and  db.users  : Internal network boundary'));
+      console.log(D('    Alternate: @boundary between A and B  or  @boundary A | B'));
+      console.log(EX('    // @boundary  internet  and  api.gateway  (#edge)  -- "Public-facing edge"'));
+      console.log(EX('    // @boundary  api.gateway | db.users  -- "Internal network boundary"'));
       console.log('');
 
       // ── LIFECYCLE ──
       console.log(H('  ── Lifecycle & Governance ──────────────────────────────────'));
       console.log('');
 
-      console.log(`  ${V('@handles')}  ${K('<classification>')}  ${D('on')}  ${K('<asset>')}  ${D('[: description]')}`);
+      console.log(`  ${V('@handles')}  ${K('<classification>')}  ${D('on')}  ${K('<asset>')}  ${D('[-- "description"]')}`);
       console.log(D('    Declare data classification handled by an asset.'));
       console.log(D('    Classifications: pii  phi  financial  secrets  internal  public'));
-      console.log(EX('    // @handles  pii  on  db.users  : Stores name, email, phone'));
+      console.log(EX('    // @handles  pii  on  db.users  -- "Stores name, email, phone"'));
       console.log(EX('    // @handles  secrets  on  api.auth.token_store'));
       console.log('');
 
-      console.log(`  ${V('@owns')}  ${K('<owner>')}  ${K('<asset>')}  ${D('[: description]')}`);
+      console.log(`  ${V('@owns')}  ${K('<owner>')}  ${D('for')}  ${K('<asset>')}  ${D('[-- "description"]')}`);
       console.log(D('    Assign ownership of an asset to a team or person.'));
-      console.log(EX('    // @owns  platform-team  api.auth'));
+      console.log(EX('    // @owns  platform-team  for  api.auth'));
       console.log('');
 
-      console.log(`  ${V('@validates')}  ${K('<control>')}  ${D('on')}  ${K('<asset>')}  ${D('[: description]')}`);
+      console.log(`  ${V('@validates')}  ${K('<control>')}  ${D('for')}  ${K('<asset>')}  ${D('[-- "description"]')}`);
       console.log(D('    Assert that a control has been validated/tested on an asset.'));
-      console.log(EX('    // @validates  Input Validation  on  api.auth  : Pen-tested 2024-Q3'));
+      console.log(EX('    // @validates  Input Validation  for  api.auth  -- "Pen-tested 2024-Q3"'));
       console.log('');
 
-      console.log(`  ${V('@audit')}  ${K('<asset>')}  ${D('[: description]')}`);
+      console.log(`  ${V('@audit')}  ${K('<asset>')}  ${D('[-- "description"]')}`);
       console.log(D('    Mark that this code path is an audit trail point.'));
-      console.log(EX('    // @audit  db.users  : All writes logged to audit_log table'));
+      console.log(EX('    // @audit  db.users  -- "All writes logged to audit_log table"'));
       console.log('');
 
-      console.log(`  ${V('@assumes')}  ${K('<asset>')}  ${D('[: description]')}`);
+      console.log(`  ${V('@assumes')}  ${K('<asset>')}  ${D('[-- "description"]')}`);
       console.log(D('    Document a security assumption about an asset.'));
-      console.log(EX('    // @assumes  api.gateway  : Upstream WAF filters malformed requests'));
+      console.log(EX('    // @assumes  api.gateway  -- "Upstream WAF filters malformed requests"'));
       console.log('');
 
-      console.log(`  ${V('@comment')}  ${D('[: description]')}`);
+      console.log(`  ${V('@comment')}  ${D('[-- "description"]')}`);
       console.log(D('    Free-form developer security note (no structural effect).'));
-      console.log(EX('    // @comment  : TODO — add rate limiting before v2 launch'));
+      console.log(EX('    // @comment  -- "TODO — add rate limiting before v2 launch"'));
       console.log('');
 
       // ── SHIELD BLOCKS ──
       console.log(H('  ── Shield Blocks ───────────────────────────────────────────'));
       console.log('');
+      console.log(`  ${V('@shield')}  ${D('[-- "reason"]')}`);
+      console.log(D('    Single-line marker for a security-sensitive code point.'));
+      console.log(EX('    // @shield  -- "Crypto key derivation — do not refactor without review"'));
+      console.log('');
       console.log(`  ${V('@shield:begin')}  ${D('/')}  ${V('@shield:end')}`);
       console.log(D('    Wrap a code block to mark it as security-sensitive.'));
       console.log(D('    GuardLink will flag unannotated symbols inside the block.'));
-      console.log(EX('    // @shield:begin'));
+      console.log(EX('    // @shield:begin  -- "Auth verification block"'));
       console.log(EX('    function verifyToken(token: string) { ... }'));
       console.log(EX('    // @shield:end'));
+      console.log('');
+
+      // ── EXTERNAL REFERENCES ──
+      console.log(H('  ── External References ─────────────────────────────────────'));
+      console.log('');
+      console.log(D('  Append space-separated refs after severity on @threat and @exposes:'));
+      console.log(EX('    cwe:CWE-89  owasp:A03:2021  capec:CAPEC-66  attack:T1190'));
+      console.log('');
+      console.log(D('  Example:'));
+      console.log(EX('    // @exposes  api.auth  to  SQL Injection  [high]  cwe:CWE-89  owasp:A03:2021'));
       console.log('');
 
       // ── TIPS ──
       console.log(H('  ── Tips ────────────────────────────────────────────────────'));
       console.log('');
+      console.log(D('  • Descriptions use -- "quoted text" format (not : colon)'));
+      console.log(D('  • Severity uses brackets: [critical] [high] [medium] [low] or [P0]-[P3]'));
       console.log(D('  • Annotations work in any comment style: // /* # -- <!-- -->'));
       console.log(D('  • Place annotations on the line ABOVE the code they describe'));
       console.log(D('  • Asset names are case-insensitive and normalized (spaces→underscores)'));
       console.log(D('  • Threat/control names can reference IDs with #id syntax'));
+      console.log(D('  • @flows uses -> arrow syntax (not "to")'));
       console.log(D('  • Run guardlink parse after adding annotations to update the threat model'));
       console.log(D('  • Run guardlink validate to check for syntax errors and dangling references'));
       console.log(D('  • Run guardlink annotate to have an AI agent add annotations automatically'));

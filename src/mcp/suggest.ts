@@ -14,6 +14,7 @@
  * @exposes #suggest to #redos [medium] cwe:CWE-1333 -- "Complex regex patterns applied to source code"
  * @mitigates #suggest against #redos using #regex-anchoring -- "Patterns designed with bounded quantifiers"
  * @exposes #suggest to #dos [low] cwe:CWE-400 -- "Large files loaded into memory for pattern scanning"
+ * @audit #suggest -- "File size is bounded by project scope; production use involves reasonable file sizes"
  * @flows FilePath -> #suggest via readFileSync -- "File read path"
  * @flows #suggest -> Suggestions via suggestAnnotations -- "Suggestion output"
  * @comment -- "Skips node_modules and .guardlink directories"
