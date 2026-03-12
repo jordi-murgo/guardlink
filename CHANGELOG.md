@@ -5,6 +5,24 @@ All notable changes to GuardLink CLI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] — 2026-03-12
+
+### Fixed
+
+- **GAL reference (`/gal`, `guardlink gal`)**: Fixed all syntax examples to match the actual parser — descriptions now correctly show `-- "quoted text"` format instead of the non-functional `: text` format; severity now shows bracket notation `[high]` / `[P0]` instead of `severity:high`; `@flows` now shows `->` arrow syntax instead of `to`; `@validates` now shows `for` preposition instead of `on`; `@owns` now includes the required `for` preposition; `@mitigates` now documents `using` as the primary keyword (with `with` as v1 compat)
+- **GAL reference**: Added missing documentation for external references (`cwe:CWE-89`, `owasp:A03:2021`, `capec:CAPEC-66`, `attack:T1190`) on `@threat` and `@exposes` annotations
+- **GAL reference**: Added missing `@boundary` alternate syntaxes (`@boundary between A and B`, `@boundary A | B`) and `(#id)` support
+- **GAL reference**: Added missing standalone `@shield` single-line marker (was only documenting `@shield:begin/end` blocks)
+- **TUI `/help`**: Added missing `/unannotated` command to the help output (was registered and functional but not listed)
+- **CLI version**: Fixed `guardlink --version` reporting `1.1.0` instead of the actual package version
+
+### Changed
+
+- **GAL reference**: Added new "External References" section explaining `cwe:`, `owasp:`, `capec:`, `attack:` ref syntax
+- **GAL reference**: Updated Tips section with description format, severity format, and `@flows ->` syntax reminders
+- **Annotations**: Changed `@comment` to `@audit` on agent-launcher timeout note for better governance visibility
+- **Annotations**: Added `@audit` to MCP suggest module, added workspace-related controls to definitions
+
 ## [1.4.0] — 2026-02-27
 
 ### Added

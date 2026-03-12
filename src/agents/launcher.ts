@@ -13,7 +13,7 @@
  * @exposes #agent-launcher to #prompt-injection [medium] cwe:CWE-77 -- "User prompt passed to agent CLI as argument"
  * @audit #agent-launcher -- "Prompt content is opaque to agent binary; injection risk depends on agent implementation"
  * @exposes #agent-launcher to #dos [low] cwe:CWE-400 -- "No timeout on foreground spawn; agent controls duration"
- * @comment -- "Timeout intentionally omitted for interactive sessions; inline mode has implicit control"
+ * @audit #agent-launcher -- "Timeout intentionally omitted for interactive sessions; inline mode has implicit control"
  * @flows UserPrompt -> #agent-launcher via launchAgent -- "Prompt input path"
  * @flows #agent-launcher -> AgentProcess via spawn -- "Process spawn path"
  * @flows AgentProcess -> #agent-launcher via stdout -- "Agent output capture"

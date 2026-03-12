@@ -55,3 +55,5 @@
 // @control Parameterized_Commands (#param-commands) -- "Using spawn with args array instead of shell string interpolation"
 // @control Glob_Pattern_Filtering (#glob-filtering) -- "Filtering files using glob patterns with explicit excludes"
 // @control Regex_Anchoring (#regex-anchoring) -- "Using anchored regex patterns (^...$) to prevent backtracking"
+// @control Prefix_Ownership (#prefix-ownership) -- "Tag prefix determines owning repo, preventing cross-repo tag collisions"
+// @control YAML_Validation (#yaml-validation) -- "Schema validation for workspace.yaml configuration files"
