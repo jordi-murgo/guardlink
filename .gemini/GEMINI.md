@@ -62,8 +62,8 @@ This project uses [GuardLink](https://guardlink.bugb.io) annotations in source c
 - #agent-launcher exposed to #prompt-injection [high] (src/agents/prompts.ts:6)
 - #llm-client exposed to #data-exposure [low] (src/analyze/index.ts:12)
 - #llm-client exposed to #prompt-injection [medium] (src/analyze/llm.ts:17)
-- #cli exposed to #cmd-injection [critical] (src/cli/index.ts:31)
 - #sarif exposed to #data-exposure [low] (src/analyzer/sarif.ts:15)
+- #cli exposed to #cmd-injection [critical] (src/cli/index.ts:31)
 - #init exposed to #data-exposure [low] (src/init/index.ts:12)
 - #mcp exposed to #cmd-injection [high] (src/mcp/index.ts:4)
 - #mcp exposed to #prompt-injection [medium] (src/mcp/server.ts:30)
@@ -93,19 +93,20 @@ This project uses [GuardLink](https://guardlink.bugb.io) annotations in source c
 - LLMToolCall -> #llm-client via createToolExecutor
 - #llm-client -> NVD via fetch
 - ProjectFiles -> #llm-client via readFileSync
-- UserArgs -> #cli via process.argv
-- #cli -> FileSystem via writeFile
+- ThreatModel -> #sarif via generateSarif
+- #sarif -> SarifLog via return
 - ... and 48 more
 
 ### Model Stats
 
-291 annotations, 16 assets, 15 threats, 12 controls, 60 exposures, 44 mitigations, 68 flows
+289 annotations, 16 assets, 15 threats, 12 controls, 60 exposures, 44 mitigations, 68 flows
 
 > **Note:** This section is auto-generated. Run `guardlink sync` to update after code changes.
 > Any coding agent (Cursor, Claude, Copilot, Windsurf, etc.) should reference these IDs
 > and continue annotating new code using the same threat model vocabulary.
 
 <!-- guardlink:end -->
+
 
 
 
