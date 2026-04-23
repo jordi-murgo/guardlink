@@ -19,6 +19,18 @@ import type { ThreatModel } from '../types/index.js';
 
 export type AnnotationMode = 'inline' | 'external';
 
+// @shield:begin -- "GAL example strings used in external mode prompt — excluded from annotation parsing"
+const EXTERNAL_PLACEMENT_EXAMPLE = [
+  '@source file:src/auth/login.ts line:42 symbol:authenticate',
+  '@exposes #auth-api to #sqli [P1] cwe:CWE-89 -- "User-supplied email reaches query builder"',
+  '@mitigates #auth-api against #sqli using #input-validation -- "Zod schema validates email before query"',
+  '@comment -- "Externalized annotations for src/auth/login.ts"',
+  '',
+  '@source file:src/auth/session.ts line:88 symbol:issueToken',
+  '@handles secrets on #auth-api -- "Issues session token"',
+].join('\n');
+// @shield:end
+
 function annotationModeLabel(mode: AnnotationMode): string {
   return mode === 'external' ? 'externalized .gal files' : 'inline source comments';
 }
@@ -247,15 +259,7 @@ ${annotationMode === 'external'
 
 \`\`\`
 ${annotationMode === 'external'
-    ? [
-        '@source file:src/auth/login.ts line:42 symbol:authenticate',
-        '@exposes #auth-api to #sqli [P1] cwe:CWE-89 -- "User-supplied email reaches query builder"',
-        '@mitigates #auth-api against #sqli using #input-validation -- "Zod schema validates email before query"',
-        '@comment -- "Externalized annotations for src/auth/login.ts"',
-        '',
-        '@source file:src/auth/session.ts line:88 symbol:issueToken',
-        '@handles secrets on #auth-api -- "Issues session token"',
-      ].join('\n')
+    ? EXTERNAL_PLACEMENT_EXAMPLE
     : [
         '// @shield:begin -- "Placement examples, excluded from parsing"',
         '//',
