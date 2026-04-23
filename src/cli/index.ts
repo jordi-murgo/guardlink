@@ -470,11 +470,12 @@ program
   .option('--cursor', 'Open Cursor IDE with prompt on clipboard')
   .option('--windsurf', 'Open Windsurf IDE with prompt on clipboard')
   .option('--clipboard', 'Copy threat report prompt to clipboard only')
+  .option('--stdout', 'Print threat report prompt to stdout and exit (for piping)')
   .action(async (promptParts: string[], opts: {
     dir: string; project: string; provider?: string; model?: string; apiKey?: string;
     stream?: boolean; webSearch?: boolean; thinking?: boolean;
     claudeCode?: boolean; codex?: boolean; gemini?: boolean;
-    cursor?: boolean; windsurf?: boolean; clipboard?: boolean;
+    cursor?: boolean; windsurf?: boolean; clipboard?: boolean; stdout?: boolean;
   }) => {
     const root = resolve(opts.dir);
     const project = detectProjectName(root, opts.project);
