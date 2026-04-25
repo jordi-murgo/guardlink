@@ -1,0 +1,520 @@
+# Instincts generated from https://github.com/jordi-murgo/guardlink
+# Generated: 2026-04-23T03:59:53.129Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: guardlink-commit-conventional
+trigger: "when writing a commit message"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: https://github.com/jordi-murgo/guardlink
+---
+
+# Guardlink Commit Conventional
+
+## Action
+
+Use conventional commit format with prefixes: feat
+
+## Evidence
+
+- 2 commits analyzed
+- Detected conventional commit pattern
+- Examples: feat: externalized annotations support — parser, review, types, tests, feat: inline/external annotation mode, --stdout flag for annotate
+
+---
+id: guardlink-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/jordi-murgo/guardlink
+---
+
+# Guardlink Commit Length
+
+## Action
+
+Write moderate-length commit messages (~67 characters)
+
+## Evidence
+
+- Average commit message length: 67 chars
+- Based on 2 commits
+
+---
+id: guardlink-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/jordi-murgo/guardlink
+---
+
+# Guardlink Naming Files
+
+## Action
+
+Use camelCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: camelCase
+
+---
+id: guardlink-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/jordi-murgo/guardlink
+---
+
+# Guardlink Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: guardlink-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/jordi-murgo/guardlink
+---
+
+# Guardlink Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: guardlink-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/jordi-murgo/guardlink
+---
+
+# Guardlink Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: guardlink-test-framework
+trigger: "when writing tests"
+confidence: 0.9
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/jordi-murgo/guardlink
+---
+
+# Guardlink Test Framework
+
+## Action
+
+Use vitest as the test framework
+
+## Evidence
+
+- Test framework detected: vitest
+- File pattern: *.test.ts
+
+---
+id: guardlink-test-naming
+trigger: "when creating a test file"
+confidence: 0.85
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/jordi-murgo/guardlink
+---
+
+# Guardlink Test Naming
+
+## Action
+
+Name test files using the pattern: *.test.ts
+
+## Evidence
+
+- File pattern: *.test.ts
+- Consistent across test files
+
+---
+id: guardlink-test-types
+trigger: "when planning tests for a feature"
+confidence: 0.7
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/jordi-murgo/guardlink
+---
+
+# Guardlink Test Types
+
+## Action
+
+Write unit, integration tests to match project standards
+
+## Evidence
+
+- Test types detected: unit, integration
+- Coverage config: no
+
+---
+id: guardlink-workflow-feature-development-with-tests-and-docs
+trigger: "when doing feature development with tests and docs"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/jordi-murgo/guardlink
+---
+
+# Guardlink Workflow Feature Development With Tests And Docs
+
+## Action
+
+Follow the feature-development-with-tests-and-docs workflow:
+1. Implement feature logic in relevant src/ files (e.g., parser, review, diff, agents, cli, etc.)
+2. Update or add new types in src/types/
+3. Update or add test suites in tests/ (e.g., parser.test.ts, review.test.ts, agents.test.ts, prompts.test.ts)
+4. Update documentation files (e.g., docs/SPEC.md, docs/GUARDLINK_REFERENCE.md, README.md, AGENTS.md)
+5. Update templates or agent instruction files if needed
+6. Bump package version and update lock files
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: src/**/*.ts, src/types/**/*.ts, tests/**/*.test.ts
+
+---
+id: guardlink-workflow-mode-or-configuration-expansion
+trigger: "when doing mode or configuration expansion"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/jordi-murgo/guardlink
+---
+
+# Guardlink Workflow Mode Or Configuration Expansion
+
+## Action
+
+Follow the mode-or-configuration-expansion workflow:
+1. Update CLI and server logic to recognize new mode or flag (e.g., src/cli/index.ts, src/mcp/server.ts)
+2. Update agents and prompts to support the new mode (e.g., src/agents/)
+3. Update TUI commands/help text if applicable
+4. Add or update tests to cover new mode values
+5. Update documentation to reflect new options
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: src/cli/index.ts, src/mcp/server.ts, src/agents/**/*.ts
+
+---
+id: guardlink-instinct-file-naming
+trigger: "When creating a new file in the codebase"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: jordi-murgo/guardlink
+---
+
+# Guardlink Instinct File Naming
+
+## Action
+
+Name the file using camelCase (e.g., myNewFile.ts)
+
+## Evidence
+
+- Pattern in src/ and tests/ files
+- Naming conventions in analysis
+
+---
+id: guardlink-instinct-function-naming
+trigger: "When defining a new function"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: jordi-murgo/guardlink
+---
+
+# Guardlink Instinct Function Naming
+
+## Action
+
+Use camelCase for function names (e.g., parseInput)
+
+## Evidence
+
+- Pattern in src/ files
+- Naming conventions in analysis
+
+---
+id: guardlink-instinct-class-naming
+trigger: "When creating a new class"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: jordi-murgo/guardlink
+---
+
+# Guardlink Instinct Class Naming
+
+## Action
+
+Use PascalCase for class names (e.g., AnnotationParser)
+
+## Evidence
+
+- Pattern in src/ files
+- Naming conventions in analysis
+
+---
+id: guardlink-instinct-constant-naming
+trigger: "When declaring a constant"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: jordi-murgo/guardlink
+---
+
+# Guardlink Instinct Constant Naming
+
+## Action
+
+Use SCREAMING_SNAKE_CASE for constant names (e.g., DEFAULT_TIMEOUT)
+
+## Evidence
+
+- Pattern in src/ files
+- Naming conventions in analysis
+
+---
+id: guardlink-instinct-import-style
+trigger: "When importing modules"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: jordi-murgo/guardlink
+---
+
+# Guardlink Instinct Import Style
+
+## Action
+
+Use relative import paths (e.g., import { foo } from '../utils/foo')
+
+## Evidence
+
+- Pattern in src/ files
+- Import style in analysis
+
+---
+id: guardlink-instinct-export-style
+trigger: "When exporting from a module"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: jordi-murgo/guardlink
+---
+
+# Guardlink Instinct Export Style
+
+## Action
+
+Use named exports (e.g., export function parseInput() {})
+
+## Evidence
+
+- Pattern in src/ files
+- Export style in analysis
+
+---
+id: guardlink-instinct-test-location
+trigger: "When adding new tests"
+confidence: 0.9
+domain: testing
+source: repo-analysis
+source_repo: jordi-murgo/guardlink
+---
+
+# Guardlink Instinct Test Location
+
+## Action
+
+Place test files in the separate tests/ directory, mirroring the src/ structure
+
+## Evidence
+
+- Pattern in tests/ directory
+- testLocation: separate in analysis
+
+---
+id: guardlink-instinct-test-naming
+trigger: "When naming a test file"
+confidence: 0.9
+domain: testing
+source: repo-analysis
+source_repo: jordi-murgo/guardlink
+---
+
+# Guardlink Instinct Test Naming
+
+## Action
+
+Use the pattern *.test.ts (e.g., parser.test.ts)
+
+## Evidence
+
+- Pattern in tests/ files
+- testPattern: *.test.ts in analysis
+
+---
+id: guardlink-instinct-test-framework
+trigger: "When writing tests"
+confidence: 0.9
+domain: testing
+source: repo-analysis
+source_repo: jordi-murgo/guardlink
+---
+
+# Guardlink Instinct Test Framework
+
+## Action
+
+Use the Vitest framework for both unit and integration tests
+
+## Evidence
+
+- Framework: vitest in analysis
+- Pattern in test files
+
+---
+id: guardlink-instinct-test-types
+trigger: "When designing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: jordi-murgo/guardlink
+---
+
+# Guardlink Instinct Test Types
+
+## Action
+
+Include both unit and integration tests for new features
+
+## Evidence
+
+- testTypes: unit, integration in analysis
+- Pattern in tests/ files
+
+---
+id: guardlink-instinct-commit-format
+trigger: "When writing a commit message"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: jordi-murgo/guardlink
+---
+
+# Guardlink Instinct Commit Format
+
+## Action
+
+Use the conventional commit format with a 'feat' prefix for features (e.g., feat: add new annotation mode)
+
+## Evidence
+
+- Pattern in commit examples
+- type: conventional, prefixes: ["feat"] in analysis
+
+---
+id: guardlink-instinct-commit-length
+trigger: "When composing a commit message"
+confidence: 0.7
+domain: git
+source: repo-analysis
+source_repo: jordi-murgo/guardlink
+---
+
+# Guardlink Instinct Commit Length
+
+## Action
+
+Keep the commit message concise, around 67 characters on average
+
+## Evidence
+
+- averageLength: 67 in analysis
+- Pattern in commit examples
+
+---
+id: guardlink-instinct-feature-workflow
+trigger: "When adding a significant new capability or mode to the system"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: jordi-murgo/guardlink
+---
+
+# Guardlink Instinct Feature Workflow
+
+## Action
+
+Follow the 'feature-development-with-tests-and-docs' workflow: implement logic in src/, update/add types in src/types/, add tests in tests/, update docs, update templates/agent instructions if needed, and bump package version and lock files
+
+## Evidence
+
+- Workflow definition in analysis
+- Pattern in commit sequences and files
+
+---
+id: guardlink-instinct-mode-expansion-workflow
+trigger: "When introducing a new mode of operation or configuration flag"
+confidence: 0.85
+domain: workflow
+source: repo-analysis
+source_repo: jordi-murgo/guardlink
+---
+
+# Guardlink Instinct Mode Expansion Workflow
+
+## Action
+
+Follow the 'mode-or-configuration-expansion' workflow: update CLI/server logic, update agents/prompts, update TUI commands/help, add/update tests, and update documentation
+
+## Evidence
+
+- Workflow definition in analysis
+- Pattern in commit sequences and files
+
